@@ -1,184 +1,89 @@
 import pandas as pd
-
+from openpyxl import load_workbook
+from openpyxl.worksheet.datavalidation import DataValidation
 
 INPUT_PATH = "results/golden_set_reviewed.csv"
-OUTPUT_PATH = "results/golden_set_human.csv"
+OUTPUT_PATH = "results/golden_set_human.xlsx"
 
-
-INTENTS = {
-    "1": "Delivery Issue",
-    "2": "Order Status",
-    "3": "Refund / Return",
-    "4": "Payment / Charges",
-    "5": "Account / Login",
-    "6": "Prime Membership",
-    "7": "Digital Content",
-    "8": "Product / Seller",
-    "9": "Technical Issue",
-    "10": "Customer Support / Escalation",
-    "11": "Other"
-}
-
-
-# ============================================================
-# LOAD DATA
-# ============================================================
+INTENTS = [
+    "Delivery Issue",
+    "Order Status",
+    "Refund / Return",
+    "Payment / Charges",
+    "Account / Login",
+    "Prime Membership",
+    "Digital Content",
+    "Product / Seller",
+    "Technical Issue",
+    "Customer Support / Escalation",
+    "Other"
+]
 
 print("Loading Golden Set...")
 
 df = pd.read_csv(INPUT_PATH)
 
-df = df.dropna(
-    subset=["customer_text", "amazon_reply"]
-).reset_index(drop=True)
+# Take 150 examples
+df = df.dropna(subset=["customer_text", "amazon_reply"])
+df = df.sample(n=150, random_state=42).reset_index(drop=True)
 
+# Keep useful columns
+review_df = pd.DataFrame({
+    "Example": range(1, 151),
+    "Customer Message": df["customer_text"],
+    "Historical Amazon Reply": df["amazon_reply"],
+    "Suggested Intent": df.get("intent", ""),
+    "Human Intent": "",
+    "Notes": ""
+})
 
-# ============================================================
-# PREPARE COLUMNS
-# ============================================================
+# Save Excel
+review_df.to_excel(OUTPUT_PATH, index=False)
 
-# Force text columns to string/object type
-# This prevents pandas dtype errors with empty values.
+# Add dropdown for Human Intent
+wb = load_workbook(OUTPUT_PATH)
+ws = wb.active
+ws.title = "Golden Set Review"
 
-if "human_intent" not in df.columns:
-    df["human_intent"] = ""
-else:
-    df["human_intent"] = df["human_intent"].fillna("").astype(str)
-
-if "label_notes" not in df.columns:
-    df["label_notes"] = ""
-else:
-    df["label_notes"] = df["label_notes"].fillna("").astype(str)
-
-
-# ============================================================
-# RESUME FROM PREVIOUS PROGRESS
-# ============================================================
-
-start_index = 0
-
-for i in range(len(df)):
-
-    value = str(
-        df.loc[i, "human_intent"]
-    ).strip()
-
-    if value == "" or value.lower() == "nan":
-        start_index = i
-        break
-else:
-    start_index = len(df)
-
-
-# ============================================================
-# DISPLAY INTENTS
-# ============================================================
-
-print("\n======================================")
-print("GOLDEN SET HUMAN REVIEW")
-print("======================================")
-
-print("\nChoose the correct intent:\n")
-
-for number, intent in INTENTS.items():
-    print(f"{number}. {intent}")
-
-
-print("\n--------------------------------------")
-print("Instructions:")
-print("Enter the number of the correct intent.")
-print("Enter 'q' to save and quit.")
-print("--------------------------------------")
-
-
-# ============================================================
-# REVIEW EACH EXAMPLE
-# ============================================================
-
-for i in range(start_index, len(df)):
-
-    row = df.iloc[i]
-
-    print("\n")
-    print("=" * 80)
-    print(f"Example {i + 1} / {len(df)}")
-    print("=" * 80)
-
-    print("\nCUSTOMER MESSAGE:")
-    print(row["customer_text"])
-
-    print("\nHISTORICAL AMAZON REPLY:")
-    print(row["amazon_reply"])
-
-    while True:
-
-        choice = input(
-            "\nYour intent (1-11, or q to quit): "
-        ).strip()
-
-        if choice.lower() == "q":
-
-            df.to_csv(
-                OUTPUT_PATH,
-                index=False
-            )
-
-            print("\nProgress saved!")
-            print("Saved to:")
-            print(OUTPUT_PATH)
-
-            raise SystemExit
-
-        if choice in INTENTS:
-
-            selected_intent = INTENTS[choice]
-
-            df.loc[
-                i,
-                "human_intent"
-            ] = selected_intent
-
-            note = input(
-                "Optional note (press Enter to skip): "
-            ).strip()
-
-            df.loc[
-                i,
-                "label_notes"
-            ] = note
-
-            # Save after every example
-            df.to_csv(
-                OUTPUT_PATH,
-                index=False
-            )
-
-            print(
-                f"Saved: {selected_intent}"
-            )
-
-            break
-
-        print(
-            "Invalid choice. Please enter 1-11 or q."
-        )
-
-
-# ============================================================
-# FINISHED
-# ============================================================
-
-print("\n======================================")
-print("HUMAN REVIEW COMPLETED!")
-print("======================================")
-
-print("\nTotal reviewed:", len(df))
-
-print("\nIntent distribution:")
-
-print(
-    df["human_intent"].value_counts()
+dropdown = DataValidation(
+    type="list",
+    formula1='"' + ",".join(INTENTS) + '"',
+    allow_blank=True
 )
 
-print("\nSaved to:")
+ws.add_data_validation(dropdown)
+
+# Human Intent column = E
+dropdown.add("E2:E151")
+
+# Formatting
+ws.freeze_panes = "A2"
+ws.auto_filter.ref = "A1:F151"
+
+ws.column_dimensions["A"].width = 12
+ws.column_dimensions["B"].width = 60
+ws.column_dimensions["C"].width = 60
+ws.column_dimensions["D"].width = 25
+ws.column_dimensions["E"].width = 30
+ws.column_dimensions["F"].width = 45
+
+for row in ws.iter_rows():
+    for cell in row:
+        cell.alignment = cell.alignment.copy(
+            wrap_text=True,
+            vertical="top"
+        )
+
+wb.save(OUTPUT_PATH)
+
+print()
+print("========================================")
+print("GOLDEN SET REVIEW SHEET CREATED")
+print("========================================")
+print(f"150 examples saved to:")
 print(OUTPUT_PATH)
+print()
+print("Open the Excel file and fill the 'Human Intent' column.")
+print("Select the correct intent from the dropdown.")
+print("Add notes only when useful.")
+print()

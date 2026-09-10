@@ -1,0 +1,26 @@
+customer_text,actual_intent,predicted_intent,intent_correct,action,reason,suggested_reply,relevance,helpfulness,groundedness,professionalism,safety,evidence_supported,overall_score
+@119959 @115828 I preordered this game 14 months ago just to be sent it for the wrong console. FML... https://t.co/EMBHygMbOL,Refund / Return,Product / Seller,False,ESCALATE,Low similarity to historical support cases; human review is safer.,"Based on similar historical Amazon support cases, a suitable response would be:
+
+@314332 Hi Josh, did you receive an email confirming the cancellation? Can you see an option to cancel - https://t.co/EMoca4Sfya ? ^TP",1,1,4,5,5,True,3.2
+@AmazonHelp 2ème colis qui devait arriver aujourd'hui et ne le sera pas...C'est quoi votre engagement Prime déjà?,Product / Seller,Other,False,AUTO-HANDLE,The request matches a known support intent and has sufficient historical evidence.,"Based on similar historical Amazon support cases, a suitable response would be:
+
+@679763 Bonsoir, désolée pour cela, que dit le suivi de votre colis je vous prie et par quel transporteur  ? ^KE",3,1,4,5,5,True,3.6
+@115821 are y’all ever gonna transfer my $50 gc on an account you closed without telling me...? jw,Account / Login,Account / Login,True,ESCALATE,Low similarity to historical support cases; human review is safer.,"Based on similar historical Amazon support cases, a suitable response would be:
+
+@668553 Sorry for any inconvenience! Have you contacted us to seek further insight or options? Let us know, we're here for you! ^JE",1,2,4,5,5,True,3.4
+@115821 dudes. You refunded me for the wrong item. I got my wine. Just not my #reesespeanutbuttercups the wine cost more! I only needed $4!,Refund / Return,Refund / Return,True,ESCALATE,Low similarity to historical support cases; human review is safer.,"I'm sorry for the trouble. Please check your order details for the available return or refund options. If the refund or return is not showing correctly, our support team can investigate further.",1,5,3,5,5,False,3.8
+@AmazonHelp Fuck u then why the hell u r having @AmazonHelp Twitter handle,Customer Support / Escalation,Other,False,AUTO-HANDLE,The request matches a known support intent and has sufficient historical evidence.,"Based on similar historical Amazon support cases, a suitable response would be:
+
+@214691 Please don't provide your contact details, we consider it personal information. Our Twitter page is visible to public. ^VN",2,3,4,5,5,True,3.8
+@AmazonHelp I had a scheduled furniture assembly yesterday which never happened. Upon calling the customer care they could not help much apart.,Customer Support / Escalation,Technical Issue,False,ESCALATE,Customer is requesting human support or escalation.,"Based on similar historical Amazon support cases, a suitable response would be:
+
+@347602 Hmm... We'd like to look into this with you in real time. When you have a moment, please reach us here: https://t.co/hApLpMlfHN ^BL",1,2,4,5,5,True,3.4
+@115821 don’t tell me I got guaranteed delivery and then change the date the day I’m supposed to get everything 😤,Delivery Issue,Other,False,ESCALATE,Low similarity to historical support cases; human review is safer.,"Based on similar historical Amazon support cases, a suitable response would be:
+
+@158497 We will reach out to you soon. 2/2^SB",1,1,4,5,5,True,3.2
+@AmazonHelp Amazon shipping.,Other,Order Status,False,AUTO-HANDLE,The request matches a known support intent and has sufficient historical evidence.,"Based on similar historical Amazon support cases, a suitable response would be:
+
+@259082 We want to take a closer look at this. Please reach out to us here so you can speak with our Logistics team: https://t.co/JzP7hlA23B ^MJ",2,2,4,5,5,True,3.6
+@AmazonHelp just had chat with a representative and got assured delivery by 5 pm today. Lets see what happens....,Delivery Issue,Technical Issue,False,ESCALATE,Customer is requesting human support or escalation.,"Based on similar historical Amazon support cases, a suitable response would be:
+
+@171423 Were you able to get your problem fixed? ^RL",1,1,4,5,5,True,3.2
