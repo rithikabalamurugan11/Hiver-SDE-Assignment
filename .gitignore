@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Large dataset
+data/twcs.csv
+
+# Generated evaluation files
+results/*.csv
+
+# Streamlit
+.streamlit/
+
+# IDE
+.vscode/
+.idea/
